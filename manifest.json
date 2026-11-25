@@ -9,7 +9,12 @@
     "description_markdown": "Gives Silo the MediUX images aura has for each movie and show. Your saved sets come first, then your favorite creators, then the sets with the most downloads on MediUX. When Silo uses one of these images, aura saves that image's type from its set, or the whole set with Apply Whole Set on.",
     "setup_markdown": "Enter your aura URL and API key, then put **aura** first in each library's providers, right after the local images or NFO provider.",
     "publisher_name": "aura",
-    "license_spdx": "MIT"
+    "license_spdx": "MIT",
+    "homepage_url": "https://github.com/xmoosex/aura-silo-plugin",
+    "source_url": "https://github.com/xmoosex/aura-silo-plugin",
+    "support_url": "https://github.com/xmoosex/aura-silo-plugin/issues",
+    "changelog_url": "https://github.com/xmoosex/aura-silo-plugin/releases",
+    "publisher_url": "https://github.com/xmoosex"
   },
   "supported_platforms": [
     {

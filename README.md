@@ -30,7 +30,13 @@ When aura applies a set to Silo itself, it clears Silo's image lock and refreshe
 
 ## Setup
 
-1. In Silo, go to **Plugins** and upload the zip for your server, then enable **aura**.
+1. In Silo, add this plugin repository, then install **aura** from it and enable it. Silo then offers new versions as they're released.
+
+   ```text
+   https://raw.githubusercontent.com/xmoosex/aura-silo-plugin/main/index.json
+   ```
+
+   Or download the zip from the [latest release](https://github.com/xmoosex/aura-silo-plugin/releases/latest) and upload it on Silo's **Plugins** page.
 2. Enter your **aura URL**, the address the plugin reaches aura at, like `http://192.168.1.30:3000`, and your **aura API key** from aura's **Settings > Authentication**. Leave the key empty when aura has no login. Only the plugin talks to aura, so a LAN address is fine. Turn on **Auto Download** to save those sets with Auto Download on, so aura keeps them up to date, and **Apply Whole Set** to save the image types in your Download Defaults with each image you use.
 3. In each library's providers, put **aura** first, right after the local images or NFO provider.
 4. Refresh an item to apply its artwork. Items whose artwork you set by hand in Silo have their images locked, so a refresh skips them until aura unlocks them.
@@ -47,7 +53,7 @@ make dist    # dist/<version>/aura-silo-plugin-<version>-linux-amd64.zip
 1. Raise `version` in `manifest.json` on `main`.
 2. Push the matching tag on that commit, like `v1.0.0`.
 
-The release workflow then runs Silo's shared plugin release workflow, which builds, signs and publishes the binaries and tells Silo's approved community catalog about the release. It also adds the zip for installing by hand to the release.
+The release workflow then runs Silo's shared plugin release workflow, which builds, signs and publishes the binaries and tells Silo's approved community catalog about the release. It also adds the zip for installing by hand to the release, and updates `index.json` on `main` with `scripts/index.py`.
 
 ## Support
 

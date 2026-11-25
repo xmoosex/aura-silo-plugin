@@ -45,3 +45,28 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
         run: gh release upload "$TAG" dist/"${TAG#v}"/aura-silo-plugin-"${TAG#v}"-linux-amd64.zip --repo "$GITHUB_REPOSITORY"
+
+  # index.json on main is the plugin repository Silo installs and updates from
+  index:
+    needs: zip
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+
+      - name: Write index.json
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/index.py "${{ github.ref_name }}"
+
+      - name: Push it to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.json
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: update index.json for ${{ github.ref_name }}"
+          git push origin HEAD:main
