@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      # The catalog needs the plugin to build without a local SDK
+      - name: Reject local SDK replaces
+        run: |
+          if grep -Eq '^replace github.com/Silo-Server/silo-plugin-sdk => /' go.mod; then
+            echo "go.mod has a machine-local silo-plugin-sdk replace."
+            exit 1
+          fi
+
+      - name: Check
+        run: make check

@@ -1,0 +1,93 @@
+{
+  "plugin_id": "community.aura",
+  "version": "1.0.0",
+  "checksum": "__CHECKSUM__",
+  "silo_api_version": "v1",
+  "presentation": {
+    "display_name": "aura",
+    "summary": "MediUX artwork from your aura server, ranked by your saved sets and favorite creators.",
+    "description_markdown": "Gives Silo the MediUX images aura has for each movie and show. Your saved sets come first, then your favorite creators, then the sets with the most downloads on MediUX. When Silo uses one of these images, aura saves that image's type from its set, or the whole set with Apply Whole Set on.",
+    "setup_markdown": "Enter your aura URL and API key, then put **aura** first in each library's providers, right after the local images or NFO provider.",
+    "publisher_name": "aura",
+    "license_spdx": "MIT"
+  },
+  "supported_platforms": [
+    {
+      "os": "linux",
+      "arch": "amd64"
+    }
+  ],
+  "capabilities": [
+    {
+      "type": "metadata_provider.v1",
+      "id": "aura",
+      "display_name": "aura",
+      "description": "MediUX artwork from aura for movies, shows, seasons and episodes.",
+      "metadata": {
+        "default_priority": {
+          "movie": 1,
+          "series": 1,
+          "season": 1,
+          "episode": 1
+        },
+        "lookup_provider_ids": [
+          "tmdb",
+          "tvdb"
+        ],
+        "lookup_images": true
+      }
+    },
+    {
+      "type": "image_resolver.v1",
+      "id": "aura",
+      "display_name": "aura Images",
+      "description": "Resolves aura:// artwork paths. Previews come from MediUX, downloads come from aura.",
+      "metadata": {
+        "schemes": [
+          "aura"
+        ],
+        "priority": 100
+      }
+    }
+  ],
+  "global_config_schema": [
+    {
+      "key": "settings",
+      "title": "aura settings",
+      "required": true,
+      "json_schema": "{\"type\":\"object\",\"required\":[\"aura_url\"],\"properties\":{\"aura_url\":{\"type\":\"string\",\"minLength\":1},\"api_key\":{\"type\":\"string\"},\"auto_download\":{\"type\":\"boolean\"},\"whole_set\":{\"type\":\"boolean\"}}}",
+      "admin_form": {
+        "fields": [
+          {
+            "key": "aura_url",
+            "label": "aura URL",
+            "description": "The address Silo reaches aura at, like http://192.168.1.30:3000",
+            "control": 1,
+            "placeholder": "http://aura:3000",
+            "required": true
+          },
+          {
+            "key": "api_key",
+            "label": "aura API key",
+            "description": "From Settings > Authentication in aura. Leave empty when aura has no login.",
+            "control": 3,
+            "secret": true
+          },
+          {
+            "key": "auto_download",
+            "label": "Auto Download",
+            "description": "Turn on Auto Download for the sets aura saves when Silo uses an image from this plugin, so aura keeps them up to date.",
+            "control": 5
+          },
+          {
+            "key": "whole_set",
+            "label": "Apply Whole Set",
+            "description": "When you use an image from this plugin, aura saves and applies the image types in your Download Defaults from its set. Off, aura saves only the type you used: the poster, backdrop, season posters or title cards.",
+            "control": 5
+          }
+        ]
+      },
+      "description": "Where to reach aura."
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+name: Release
+
+# A release is a commit on main that raises manifest.json "version", then the matching v<version> tag pushed on it.
+# Silo's shared workflow refuses tags that aren't v<semver>, aren't on main, or don't match manifest.json.
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions: {}
+
+jobs:
+  # Builds, signs and publishes the release, and tells the community catalog about it
+  release:
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    # Always @main: Silo only accepts releases signed by plugin-release.yml@refs/heads/main
+    uses: Silo-Server/.github/.github/workflows/plugin-release.yml@main
+    with:
+      platforms: linux/amd64
+      catalog_repository: Silo-Community/silo-plugins
+    secrets:
+      dispatch_token: ${{ secrets.SILO_PLUGINS_DISPATCH_TOKEN }}
+
+  # The zip for installing by hand from Silo's Plugins page, added to the release
+  zip:
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: Build the zip
+        run: python3 scripts/package.py
+
+      - name: Add it to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: gh release upload "$TAG" dist/"${TAG#v}"/aura-silo-plugin-"${TAG#v}"-linux-amd64.zip --repo "$GITHUB_REPOSITORY"
