@@ -50,8 +50,12 @@ make dist    # dist/<version>/aura-silo-plugin-<version>-linux-amd64.zip
 
 ## Releasing
 
-1. Raise `version` in `manifest.json` on `main`.
-2. Push the matching tag on that commit, like `v1.0.0`.
+```sh
+make release VERSION=1.0.1             # raises manifest.json's version, commits, tags v1.0.1 and pushes
+make release VERSION=1.0.1 DRY_RUN=1   # only shows what it would do
+```
+
+It needs a clean, up-to-date `main` and a version higher than the current one. By hand, raise `version` in `manifest.json`, commit it on `main`, and push the matching tag, like `v1.0.1`, on that commit.
 
 The release workflow then runs Silo's shared plugin release workflow, which builds, signs and publishes the binaries and tells Silo's approved community catalog about the release. It also adds the zip for installing by hand to the release, and updates `index.json` on `main` with `scripts/index.py`.
 
